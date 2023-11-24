@@ -1,0 +1,53 @@
+https://chat.openai.com/share/7738b879-4192-4ec2-92a8-ca89be136169#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+
+void polySubCipher(char *plaintext, char *key) {
+    int i, j;
+
+    printf("Ciphertext: ");
+    
+    for (i = 0; i < strlen(plaintext); i++) {
+        char currentChar = plaintext[i];
+
+        if (isalpha(currentChar)) {
+            // Determine the index of the key for the current character
+            int keyIndex = i % strlen(key);
+            
+            // Adjust the key character based on the case of the current character
+            char adjustedKeyChar = isupper(currentChar) ? toupper(key[keyIndex]) : tolower(key[keyIndex]);
+
+            // Apply the monoalphabetic substitution
+            char cipherChar = (currentChar + adjustedKeyChar) % 26;
+
+            // Adjust the result to the ASCII values of 'A' or 'a'
+            cipherChar += isupper(currentChar) ? 'A' : 'a';
+
+            printf("%c", cipherChar);
+        } else {
+            // Non-alphabetic characters remain unchanged
+            printf("%c", currentChar);
+        }
+    }
+
+    printf("\n");
+}
+
+int main() {
+    char plaintext[1000];
+    char key[100];
+
+    printf("Enter the plaintext: ");
+    fgets(plaintext, sizeof(plaintext), stdin);
+
+    printf("Enter the key: ");
+    fgets(key, sizeof(key), stdin);
+
+    // Remove newline characters from input
+    strtok(plaintext, "\n");
+    strtok(key, "\n");
+
+    polySubCipher(plaintext, key);
+
+    return 0;
+}
